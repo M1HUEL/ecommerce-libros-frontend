@@ -1,14 +1,172 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <script src="index.js">
-      // ...
-    </script>
-  </body>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Librería Raudskinna</title>
+
+  <!-- Hoja de estilos compartida por las vistas de Raudskinna. -->
+  <link rel="stylesheet" th:href="@{/styles/index.css}" />
+</head>
+
+<body>
+
+<!-- Reutilizamos la cabecera de clientes y marcamos Inicio como activo. -->
+<th:block th:replace="~{fragments/header :: header('inicio')}"></th:block>
+
+<main class="contenedor inicio-publico">
+
+  <!-- Presentación principal de la librería. -->
+  <section class="hero">
+    <div>
+      <p class="hero-etiqueta">Librería Raudskinna</p>
+      <h1>Historias para todos los lectores</h1>
+      <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
+
+      <a class="boton boton-claro" th:href="@{/catalogo}">
+        Explorar catálogo
+      </a>
+    </div>
+
+    <aside class="hero-tarjeta">
+      <h2>Selección editorial</h2>
+      <p>Ficción · Fantasía · Terror</p>
+    </aside>
+  </section>
+
+  <!--
+      Categorías destacadas del catálogo público.
+
+      Cada enlace permite acceder directamente al catálogo
+      aplicando el filtro de la categoría seleccionada.
+
+      CatalogoController recibe el parámetro categoria
+      y delega su procesamiento a LibroService.
+  -->
+  <section class="seccion">
+
+    <h2>Categorías</h2>
+
+    <div class="categorias">
+
+      <a class="categoria"
+         th:href="@{/catalogo(categoria='Ficción')}">
+        Ficción
+      </a>
+
+      <a class="categoria"
+         th:href="@{/catalogo(categoria='Fantasía')}">
+        Fantasía
+      </a>
+
+      <a class="categoria"
+         th:href="@{/catalogo(categoria='Terror')}">
+        Terror
+      </a>
+
+    </div>
+
+  </section>
+
+  <!--
+    Libros activos recuperados desde la base de datos.
+    InicioController proporciona la colección mediante LibroService.
+  -->
+  <section class="seccion">
+    <h2>Novedades y destacados</h2>
+
+    <!-- Mensaje cuando todavía no existen libros activos. -->
+    <p th:if="${#lists.isEmpty(libros)}">
+      Todavía no hay libros disponibles en el catálogo.
+    </p>
+
+    <!-- Presentar los libros públicos conservando los estilos existentes. -->
+    <ul class="libros" th:unless="${#lists.isEmpty(libros)}">
+
+      <li class="libro" th:each="tarjeta : ${libros}">
+
+        <!-- Portada del libro y alternativa cuando no existe imagen. -->
+        <div class="portada">
+          <img th:if="${tarjeta.libro.portadaUrl != null
+                 and !#strings.isEmpty(tarjeta.libro.portadaUrl)}"
+               th:src="${tarjeta.libro.portadaUrl}"
+               th:alt="|Portada de ${tarjeta.libro.titulo}|"
+               loading="lazy" />
+
+          <span th:unless="${tarjeta.libro.portadaUrl != null
+                      and !#strings.isEmpty(tarjeta.libro.portadaUrl)}">
+      PORTADA
+    </span>
+        </div>
+
+        <!-- Información bibliográfica pública. -->
+        <h3 th:text="${tarjeta.libro.titulo}">
+          Título del libro
+        </h3>
+
+        <p class="autor"
+           th:text="${#strings.listJoin(tarjeta.libro.autores, ', ')}">
+          Autor
+        </p>
+
+        <p th:text="${tarjeta.libro.categoria}">
+          Categoría
+        </p>
+
+        <!--
+          Resumen comercial calculado previamente por LibroService.
+          La vista únicamente presenta los valores recibidos.
+        -->
+        <div class="informacion-comercial">
+
+          <!-- Mostrar el menor precio disponible del libro. -->
+          <p th:if="${tarjeta.disponible}">
+            Desde
+
+            <strong th:with="precioFormateado=${#numbers.formatDecimal(tarjeta.precioDesde, 1, 'COMMA', 2, 'POINT')}"
+                    th:text="|$${precioFormateado} MXN|">
+              $149.00 MXN
+            </strong>
+
+          </p>
+
+
+          <!-- Mostrar agotado cuando ninguna presentación esté disponible. -->
+          <p th:unless="${tarjeta.disponible}">
+            Agotado
+          </p>
+
+        </div>
+
+        <!--
+          Permite consultar el detalle bibliográfico y comercial del libro.
+          El enlace permanece disponible incluso cuando el libro está agotado.
+
+          Thymeleaf construye la URL utilizando el identificador del libro.
+        -->
+        <a class="boton boton-primario"
+           th:href="@{/detalle-libro/{id}(id=${tarjeta.libro.id})}">
+          Ver detalle
+        </a>
+
+      </li>
+
+    </ul>
+  </section>
+</main>
+
+<!-- Pie de página compartiendo las rutas de la aplicación. -->
+<footer class="pie">
+  <div class="contenedor">
+    <span>Librería Raudskinna</span>
+
+    <nav aria-label="Pie de página">
+      <a th:href="@{/}">Inicio</a> ·
+      <a th:href="@{/catalogo}">Catálogo</a> ·
+      <a th:href="@{/carrito}">Carrito</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
 </html>
