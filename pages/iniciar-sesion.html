@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Iniciar sesión · Librería Raudskinna</title>
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
   </head>
   <body>
     <th:block th:replace="~{fragments/header :: header('cuenta')}"></th:block>
@@ -21,7 +21,7 @@
         <div th:if="${param.logout}" style="color: #1a7f37;">Sesión cerrada correctamente.</div>
         <div th:if="${param.registrado}" style="color: #1a7f37;">Registro exitoso, ya puedes iniciar sesión.</div>
 
-        <form class="formulario" th:action="@{/iniciar-sesion}" method="post">
+        <form class="formulario" th:action="iniciar-sesion.html" method="post">
           <label for="correo">Correo electrónico</label>
           <input
             class="campo campo-formulario"
@@ -51,7 +51,7 @@
 
         <div class="alterno">
           <p>¿Aún no tienes cuenta?</p>
-          <a class="boton boton-claro" th:href="@{/registro}">Crear cuenta</a>
+          <a class="boton boton-claro" th:href="registro.html">Crear cuenta</a>
         </div>
       </section>
     </main>
@@ -60,11 +60,12 @@
       <div class="contenedor">
         <span>Librería Raudskinna</span>
         <nav aria-label="Pie de página">
-          <a th:href="@{/}">Inicio</a> ·
-          <a th:href="@{/catalogo}">Catálogo</a> ·
-          <a th:href="@{/carrito}">Carrito</a>
+          <a th:href="index.html">Inicio</a> ·
+          <a th:href="catalogo.html">Catálogo</a> ·
+          <a th:href="carrito.html">Carrito</a>
         </nav>
       </div>
     </footer>
-  </body>
+    <script type="module" src="../js/pages/iniciar-sesion.js"></script>
+</body>
 </html>

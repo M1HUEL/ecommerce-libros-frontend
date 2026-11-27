@@ -7,7 +7,7 @@
 
     <title>Confirmar compra · Librería Raudskinna</title>
 
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
 </head>
 
 <body>
@@ -55,7 +55,7 @@
             <form class="formulario"
                   id="form-checkout"
                   method="post"
-                  th:action="@{/checkout/confirmar}">
+                  th:action="#">
 
                 <!--
                     Las compras físicas o mixtas requieren
@@ -169,7 +169,7 @@
 
                 <form class="formulario"
                       method="post"
-                      th:action="@{/checkout/direcciones}">
+                      th:action="#">
 
                     <label for="nombreDestinatario">
                         Nombre del destinatario
@@ -388,7 +388,7 @@
             </p>
 
             <a class="boton boton-claro"
-               th:href="@{/carrito}">
+               th:href="carrito.html">
 
                 Regresar al carrito
 
@@ -408,9 +408,9 @@
 
         <nav aria-label="Pie de página">
 
-            <a th:href="@{/}">Inicio</a> ·
-            <a th:href="@{/catalogo}">Catálogo</a> ·
-            <a th:href="@{/carrito}">Carrito</a>
+            <a th:href="index.html">Inicio</a> ·
+            <a th:href="catalogo.html">Catálogo</a> ·
+            <a th:href="carrito.html">Carrito</a>
 
         </nav>
 
@@ -418,5 +418,6 @@
 
 </footer>
 
+  <script type="module" src="../js/pages/checkout.js"></script>
 </body>
 </html>

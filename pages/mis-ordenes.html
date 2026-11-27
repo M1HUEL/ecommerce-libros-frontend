@@ -11,7 +11,7 @@
   <title>Mis órdenes · Librería Raudskinna</title>
 
   <link rel="stylesheet"
-        th:href="@{/styles/index.css}" />
+        th:href="../css/styles.css" />
 
 </head>
 
@@ -50,7 +50,7 @@
     <div class="acciones">
 
       <a class="boton boton-primario"
-         th:href="@{/catalogo}">
+         th:href="catalogo.html">
 
         Explorar catálogo
 
@@ -206,7 +206,7 @@
        th:unless="${#lists.isEmpty(ordenes)}">
 
     <a class="boton boton-claro"
-       th:href="@{/catalogo}">
+       th:href="catalogo.html">
 
       Seguir comprando
 
@@ -224,9 +224,9 @@
 
     <nav aria-label="Pie de página">
 
-      <a th:href="@{/}">Inicio</a> ·
-      <a th:href="@{/catalogo}">Catálogo</a> ·
-      <a th:href="@{/carrito}">Carrito</a>
+      <a th:href="index.html">Inicio</a> ·
+      <a th:href="catalogo.html">Catálogo</a> ·
+      <a th:href="carrito.html">Carrito</a>
 
     </nav>
 
@@ -234,6 +234,7 @@
 
 </footer>
 
+  <script type="module" src="../js/pages/mis-ordenes.js"></script>
 </body>
 
 </html>

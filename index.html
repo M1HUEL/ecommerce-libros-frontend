@@ -6,7 +6,7 @@
   <title>Librería Raudskinna</title>
 
   <!-- Hoja de estilos compartida por las vistas de Raudskinna. -->
-  <link rel="stylesheet" th:href="@{/styles/index.css}" />
+  <link rel="stylesheet" th:href="css/styles.css" />
 </head>
 
 <body>
@@ -23,7 +23,7 @@
       <h1>Historias para todos los lectores</h1>
       <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
 
-      <a class="boton boton-claro" th:href="@{/catalogo}">
+      <a class="boton boton-claro" th:href="pages/catalogo.html">
         Explorar catálogo
       </a>
     </div>
@@ -50,17 +50,17 @@
     <div class="categorias">
 
       <a class="categoria"
-         th:href="@{/catalogo(categoria='Ficción')}">
+         th:href="pages/catalogo.html?categoria=Ficci%C3%B3n">
         Ficción
       </a>
 
       <a class="categoria"
-         th:href="@{/catalogo(categoria='Fantasía')}">
+         th:href="pages/catalogo.html?categoria=Fantas%C3%ADa">
         Fantasía
       </a>
 
       <a class="categoria"
-         th:href="@{/catalogo(categoria='Terror')}">
+         th:href="pages/catalogo.html?categoria=Terror">
         Terror
       </a>
 
@@ -145,7 +145,7 @@
           Thymeleaf construye la URL utilizando el identificador del libro.
         -->
         <a class="boton boton-primario"
-           th:href="@{/detalle-libro/{id}(id=${tarjeta.libro.id})}">
+           th:href="pages/detalle-libro.html?id=1">
           Ver detalle
         </a>
 
@@ -161,12 +161,13 @@
     <span>Librería Raudskinna</span>
 
     <nav aria-label="Pie de página">
-      <a th:href="@{/}">Inicio</a> ·
-      <a th:href="@{/catalogo}">Catálogo</a> ·
-      <a th:href="@{/carrito}">Carrito</a>
+      <a th:href="index.html">Inicio</a> ·
+      <a th:href="pages/catalogo.html">Catálogo</a> ·
+      <a th:href="pages/carrito.html">Carrito</a>
     </nav>
   </div>
 </footer>
 
+  <script type="module" src="js/pages/inicio.js"></script>
 </body>
 </html>

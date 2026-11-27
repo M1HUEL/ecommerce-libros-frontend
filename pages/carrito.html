@@ -9,7 +9,7 @@
     <title>Tu carrito · Librería Raudskinna</title>
 
     <!-- Reutilizar los estilos públicos de la librería. -->
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
 </head>
 
 <body>
@@ -53,7 +53,7 @@
         <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
 
         <a class="boton boton-primario"
-           th:href="@{/catalogo}">
+           th:href="catalogo.html">
             Explorar catálogo
         </a>
 
@@ -116,7 +116,7 @@
                     <!-- Formulario para modificar la cantidad. -->
                     <form class="cantidad"
                           method="post"
-                          th:action="@{/carrito/modificar}">
+                          th:action="#">
 
                         <input type="hidden"
                                name="formatoLibroId"
@@ -155,7 +155,7 @@
 
                 <!-- Formulario para eliminar el artículo. -->
                 <form method="post"
-                      th:action="@{/carrito/eliminar}">
+                      th:action="#">
 
                     <input type="hidden"
                            name="formatoLibroId"
@@ -204,14 +204,14 @@
             de compra mediante el controlador CheckoutController.
             -->
             <a class="boton boton-primario"
-               th:href="@{/checkout}">
+               th:href="checkout.html">
 
                 Continuar al checkout
 
             </a>
 
             <a class="boton boton-claro"
-               th:href="@{/catalogo}">
+               th:href="catalogo.html">
                 Seguir comprando
             </a>
 
@@ -230,9 +230,9 @@
 
         <nav aria-label="Pie de página">
 
-            <a th:href="@{/}">Inicio</a> ·
-            <a th:href="@{/catalogo}">Catálogo</a> ·
-            <a th:href="@{/carrito}">Carrito</a>
+            <a th:href="index.html">Inicio</a> ·
+            <a th:href="catalogo.html">Catálogo</a> ·
+            <a th:href="carrito.html">Carrito</a>
 
         </nav>
 
@@ -240,6 +240,7 @@
 
 </footer>
 
+  <script type="module" src="../js/pages/carrito.js"></script>
 </body>
 
 </html>

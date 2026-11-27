@@ -9,7 +9,7 @@
     <title>Catálogo · Librería Raudskinna</title>
 
     <!-- Reutilizar la identidad gráfica de la librería. -->
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
 </head>
 
 <body>
@@ -44,7 +44,7 @@
     <form class="filtros"
           role="search"
           method="get"
-          th:action="@{/catalogo}">
+          th:action="catalogo.html">
 
         <!-- Conservar el término introducido por el visitante. -->
         <input
@@ -144,7 +144,7 @@
 
         <!-- Restablecer el catálogo público completo. -->
         <a class="boton boton-claro"
-           th:href="@{/catalogo}">
+           th:href="catalogo.html">
             Limpiar
         </a>
 
@@ -263,7 +263,7 @@
                 independientemente de la disponibilidad del libro.
             -->
             <a class="boton boton-primario"
-               th:href="@{/detalle-libro/{id}(id=${tarjeta.libro.id})}">
+               th:href="detalle-libro.html?id=1">
                 Ver detalle
             </a>
 
@@ -281,14 +281,15 @@
         <span>Librería Raudskinna</span>
 
         <nav aria-label="Pie de página">
-            <a th:href="@{/}">Inicio</a> ·
-            <a th:href="@{/catalogo}">Catálogo</a> ·
-            <a th:href="@{/carrito}">Carrito</a>
+            <a th:href="index.html">Inicio</a> ·
+            <a th:href="catalogo.html">Catálogo</a> ·
+            <a th:href="carrito.html">Carrito</a>
         </nav>
 
     </div>
 
 </footer>
 
+  <script type="module" src="../js/pages/catalogo.js"></script>
 </body>
 </html>

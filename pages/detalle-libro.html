@@ -11,7 +11,7 @@
     </title>
 
     <!-- Reutilizar los estilos públicos de la librería. -->
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
 </head>
 
 <body>
@@ -24,7 +24,7 @@
 
     <!-- Navegación hacia la página principal. -->
     <section class="seccion">
-        <a th:href="@{/}">← Volver al inicio</a>
+        <a th:href="index.html">← Volver al inicio</a>
     </section>
 
     <!-- Información bibliográfica del libro. -->
@@ -157,7 +157,7 @@
                 <form class="formulario-agregar-carrito"
                       th:if="${presentacion.disponible and clienteAutenticado}"
                       method="post"
-                      th:action="@{/carrito/agregar}">
+                      th:action="#">
 
                     <!-- Identificador de la presentación seleccionada. -->
                     <input type="hidden"
@@ -194,7 +194,7 @@
                 -->
                 <a class="boton boton-primario"
                    th:if="${presentacion.disponible and !clienteAutenticado}"
-                   th:href="@{/carrito/continuar/{libroId}(libroId=${libro.id})}">
+                   th:href="iniciar-sesion.html">
 
                     Iniciar sesión para comprar
 
@@ -214,12 +214,13 @@
         <span>Librería Raudskinna</span>
 
         <nav aria-label="Pie de página">
-            <a th:href="@{/}">Inicio</a> ·
-            <a th:href="@{/catalogo}">Catálogo</a> ·
-            <a th:href="@{/carrito}">Carrito</a>
+            <a th:href="index.html">Inicio</a> ·
+            <a th:href="catalogo.html">Catálogo</a> ·
+            <a th:href="carrito.html">Carrito</a>
         </nav>
     </div>
 </footer>
 
+  <script type="module" src="../js/pages/detalle-libro.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Crear cuenta · Librería Raudskinna</title>
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
   </head>
   <body>
     <th:block th:replace="~{fragments/header :: header('cuenta')}"></th:block>
@@ -25,7 +25,7 @@
                 class="formulario-error">
         </p>
 
-        <form class="formulario" th:action="@{/registro}" th:object="${usuario}" method="post">
+        <form class="formulario" th:action="registro.html" th:object="${usuario}" method="post">
           <label for="nombre">Nombre completo</label>
           <input
             class="campo campo-formulario"
@@ -79,7 +79,7 @@
             Registrarme
           </button>
           <p class="formulario-enlace">
-            ¿Ya tienes cuenta? <a th:href="@{/iniciar-sesion}">Iniciar sesión</a>
+            ¿Ya tienes cuenta? <a th:href="iniciar-sesion.html">Iniciar sesión</a>
           </p>
         </form>
       </section>
@@ -89,11 +89,12 @@
       <div class="contenedor">
         <span>Librería Raudskinna</span>
         <nav aria-label="Pie de página">
-          <a th:href="@{/}">Inicio</a> ·
-          <a th:href="@{/catalogo}">Catálogo</a> ·
-          <a th:href="@{/carrito}">Carrito</a>
+          <a th:href="index.html">Inicio</a> ·
+          <a th:href="catalogo.html">Catálogo</a> ·
+          <a th:href="carrito.html">Carrito</a>
         </nav>
       </div>
     </footer>
-  </body>
+    <script type="module" src="../js/pages/registro.js"></script>
+</body>
 </html>

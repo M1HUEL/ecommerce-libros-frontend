@@ -7,7 +7,7 @@
 
     <title>Orden confirmada · Librería Raudskinna</title>
 
-    <link rel="stylesheet" th:href="@{/styles/index.css}" />
+    <link rel="stylesheet" th:href="../css/styles.css" />
 </head>
 
 <body>
@@ -120,14 +120,14 @@
         <div class="acciones">
 
             <a class="boton boton-primario"
-               th:href="@{/mis-ordenes}">
+               th:href="mis-ordenes.html">
 
                 Ver mis órdenes
 
             </a>
 
             <a class="boton boton-claro"
-               th:href="@{/catalogo}">
+               th:href="catalogo.html">
 
                 Seguir comprando
 
@@ -147,9 +147,9 @@
 
         <nav aria-label="Pie de página">
 
-            <a th:href="@{/}">Inicio</a> ·
-            <a th:href="@{/catalogo}">Catálogo</a> ·
-            <a th:href="@{/carrito}">Carrito</a>
+            <a th:href="index.html">Inicio</a> ·
+            <a th:href="catalogo.html">Catálogo</a> ·
+            <a th:href="carrito.html">Carrito</a>
 
         </nav>
 
@@ -157,5 +157,6 @@
 
 </footer>
 
+  <script type="module" src="../js/pages/orden-confirmada.js"></script>
 </body>
 </html>
