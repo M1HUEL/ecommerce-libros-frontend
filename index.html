@@ -1,172 +1,98 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Librería Raudskinna</title>
-
-  <!-- Hoja de estilos compartida por las vistas de Raudskinna. -->
-  <link rel="stylesheet" th:href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-
-<!-- Reutilizamos la cabecera de clientes y marcamos Inicio como activo. -->
-<th:block th:replace="~{fragments/header :: header('inicio')}"></th:block>
-
-<main class="contenedor inicio-publico">
-
-  <!-- Presentación principal de la librería. -->
-  <section class="hero">
-    <div>
-      <p class="hero-etiqueta">Librería Raudskinna</p>
-      <h1>Historias para todos los lectores</h1>
-      <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
-
-      <a class="boton boton-claro" th:href="pages/catalogo.html">
-        Explorar catálogo
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="logo" href="index.html">
+        <img src="assets/logo.png" alt="Librería Raudskinna" />
       </a>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="index.html" aria-current="page">Inicio</a></li>
+          <li><a href="pages/catalogo.html">Catálogo</a></li>
+          <li><a href="pages/iniciar-sesion.html">Iniciar sesión</a></li>
+          <li><a href="pages/mis-ordenes.html">Mis órdenes</a></li>
+          <li><a href="pages/carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <aside class="hero-tarjeta">
-      <h2>Selección editorial</h2>
-      <p>Ficción · Fantasía · Terror</p>
-    </aside>
-  </section>
+  <main class="contenedor inicio-publico">
+    <section class="hero">
+      <div>
+        <p class="hero-etiqueta">Librería Raudskinna</p>
+        <h1>Historias para todos los lectores</h1>
+        <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
+        <a class="boton boton-claro" href="pages/catalogo.html">Explorar catálogo</a>
+      </div>
 
-  <!--
-      Categorías destacadas del catálogo público.
+      <aside class="hero-tarjeta">
+        <h2>Selección editorial</h2>
+        <p>Ficción · Fantasía · Terror</p>
+      </aside>
+    </section>
 
-      Cada enlace permite acceder directamente al catálogo
-      aplicando el filtro de la categoría seleccionada.
+    <section class="seccion">
+      <h2>Categorías</h2>
+      <div class="categorias">
+        <a class="categoria" href="pages/catalogo.html?categoria=Ficci%C3%B3n">Ficción</a>
+        <a class="categoria" href="pages/catalogo.html?categoria=Fantas%C3%ADa">Fantasía</a>
+        <a class="categoria" href="pages/catalogo.html?categoria=Terror">Terror</a>
+      </div>
+    </section>
 
-      CatalogoController recibe el parámetro categoria
-      y delega su procesamiento a LibroService.
-  -->
-  <section class="seccion">
+    <section class="seccion">
+      <h2>Novedades y destacados</h2>
+      <p id="mensaje-vacio" hidden>Todavía no hay libros disponibles en el catálogo.</p>
 
-    <h2>Categorías</h2>
+      <ul class="libros" id="lista-libros">
+        <li class="libro">
+          <div class="portada">
+            <img src="assets/portadas/dune.png" alt="Portada de Dune" loading="lazy" />
+          </div>
+          <h3>Dune</h3>
+          <p class="autor">Frank Herbert</p>
+          <p>Ciencia ficción</p>
+          <div class="informacion-comercial">
+            <p>Desde <strong>$350.00 MXN</strong></p>
+          </div>
+          <a class="boton boton-primario" href="pages/detalle-libro.html?id=1">Ver detalle</a>
+        </li>
 
-    <div class="categorias">
+        <li class="libro">
+          <div class="portada">
+            <img src="assets/portadas/cleanCode.png" alt="Portada de Clean Code" loading="lazy" />
+          </div>
+          <h3>Clean Code</h3>
+          <p class="autor">Robert C. Martin</p>
+          <p>Tecnología</p>
+          <div class="informacion-comercial">
+            <p>Desde <strong>$420.00 MXN</strong></p>
+          </div>
+          <a class="boton boton-primario" href="pages/detalle-libro.html?id=2">Ver detalle</a>
+        </li>
+      </ul>
+    </section>
+  </main>
 
-      <a class="categoria"
-         th:href="pages/catalogo.html?categoria=Ficci%C3%B3n">
-        Ficción
-      </a>
-
-      <a class="categoria"
-         th:href="pages/catalogo.html?categoria=Fantas%C3%ADa">
-        Fantasía
-      </a>
-
-      <a class="categoria"
-         th:href="pages/catalogo.html?categoria=Terror">
-        Terror
-      </a>
-
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Librería Raudskinna</span>
+      <nav aria-label="Pie de página">
+        <a href="index.html">Inicio</a> ·
+        <a href="pages/catalogo.html">Catálogo</a> ·
+        <a href="pages/carrito.html">Carrito</a>
+      </nav>
     </div>
-
-  </section>
-
-  <!--
-    Libros activos recuperados desde la base de datos.
-    InicioController proporciona la colección mediante LibroService.
-  -->
-  <section class="seccion">
-    <h2>Novedades y destacados</h2>
-
-    <!-- Mensaje cuando todavía no existen libros activos. -->
-    <p th:if="${#lists.isEmpty(libros)}">
-      Todavía no hay libros disponibles en el catálogo.
-    </p>
-
-    <!-- Presentar los libros públicos conservando los estilos existentes. -->
-    <ul class="libros" th:unless="${#lists.isEmpty(libros)}">
-
-      <li class="libro" th:each="tarjeta : ${libros}">
-
-        <!-- Portada del libro y alternativa cuando no existe imagen. -->
-        <div class="portada">
-          <img th:if="${tarjeta.libro.portadaUrl != null
-                 and !#strings.isEmpty(tarjeta.libro.portadaUrl)}"
-               th:src="${tarjeta.libro.portadaUrl}"
-               th:alt="|Portada de ${tarjeta.libro.titulo}|"
-               loading="lazy" />
-
-          <span th:unless="${tarjeta.libro.portadaUrl != null
-                      and !#strings.isEmpty(tarjeta.libro.portadaUrl)}">
-      PORTADA
-    </span>
-        </div>
-
-        <!-- Información bibliográfica pública. -->
-        <h3 th:text="${tarjeta.libro.titulo}">
-          Título del libro
-        </h3>
-
-        <p class="autor"
-           th:text="${#strings.listJoin(tarjeta.libro.autores, ', ')}">
-          Autor
-        </p>
-
-        <p th:text="${tarjeta.libro.categoria}">
-          Categoría
-        </p>
-
-        <!--
-          Resumen comercial calculado previamente por LibroService.
-          La vista únicamente presenta los valores recibidos.
-        -->
-        <div class="informacion-comercial">
-
-          <!-- Mostrar el menor precio disponible del libro. -->
-          <p th:if="${tarjeta.disponible}">
-            Desde
-
-            <strong th:with="precioFormateado=${#numbers.formatDecimal(tarjeta.precioDesde, 1, 'COMMA', 2, 'POINT')}"
-                    th:text="|$${precioFormateado} MXN|">
-              $149.00 MXN
-            </strong>
-
-          </p>
-
-
-          <!-- Mostrar agotado cuando ninguna presentación esté disponible. -->
-          <p th:unless="${tarjeta.disponible}">
-            Agotado
-          </p>
-
-        </div>
-
-        <!--
-          Permite consultar el detalle bibliográfico y comercial del libro.
-          El enlace permanece disponible incluso cuando el libro está agotado.
-
-          Thymeleaf construye la URL utilizando el identificador del libro.
-        -->
-        <a class="boton boton-primario"
-           th:href="pages/detalle-libro.html?id=1">
-          Ver detalle
-        </a>
-
-      </li>
-
-    </ul>
-  </section>
-</main>
-
-<!-- Pie de página compartiendo las rutas de la aplicación. -->
-<footer class="pie">
-  <div class="contenedor">
-    <span>Librería Raudskinna</span>
-
-    <nav aria-label="Pie de página">
-      <a th:href="index.html">Inicio</a> ·
-      <a th:href="pages/catalogo.html">Catálogo</a> ·
-      <a th:href="pages/carrito.html">Carrito</a>
-    </nav>
-  </div>
-</footer>
+  </footer>
 
   <script type="module" src="js/pages/inicio.js"></script>
 </body>
