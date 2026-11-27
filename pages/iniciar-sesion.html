@@ -1,71 +1,83 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Iniciar sesión · Librería Raudskinna</title>
-    <link rel="stylesheet" th:href="../css/styles.css" />
-  </head>
-  <body>
-    <th:block th:replace="~{fragments/header :: header('cuenta')}"></th:block>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar sesión · Librería Raudskinna</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
 
-    <main class="contenedor">
-      <section class="panel registro registro-estrecho">
-        <h1>Iniciar sesión</h1>
-        <p class="registro-texto">
-          Accede a tu cuenta para continuar con tus compras y consultar tus
-          órdenes.
-        </p>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="logo" href="../index.html">
+        <img src="../assets/logo.png" alt="Librería Raudskinna" />
+      </a>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="catalogo.html">Catálogo</a></li>
+          <li><a href="iniciar-sesion.html" aria-current="page">Iniciar sesión</a></li>
+          <li><a href="mis-ordenes.html">Mis órdenes</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-        <div th:if="${param.error}" style="color: #b00020;">Correo o contraseña incorrectos.</div>
-        <div th:if="${param.logout}" style="color: #1a7f37;">Sesión cerrada correctamente.</div>
-        <div th:if="${param.registrado}" style="color: #1a7f37;">Registro exitoso, ya puedes iniciar sesión.</div>
+  <main class="contenedor">
+    <section class="panel registro registro-estrecho">
+      <h1>Iniciar sesión</h1>
+      <p class="registro-texto">
+        Accede a tu cuenta para continuar con tus compras y consultar tus órdenes.
+      </p>
 
-        <form class="formulario" th:action="iniciar-sesion.html" method="post">
-          <label for="correo">Correo electrónico</label>
-          <input
-            class="campo campo-formulario"
-            id="correo"
-            name="correo"
-            type="email"
-            placeholder="correo@ejemplo.com"
-            autocomplete="email"
-            required
-          />
+      <p class="formulario-error" id="mensaje-error" role="alert" hidden></p>
 
-          <label for="contrasena">Contraseña</label>
-          <input
-            class="campo campo-formulario"
-            id="contrasena"
-            name="contrasena"
-            type="password"
-            placeholder="Tu contraseña"
-            autocomplete="current-password"
-            required
-          />
+      <form class="formulario" id="form-login" action="#" method="post">
+        <label for="correo">Correo electrónico</label>
+        <input
+          class="campo campo-formulario"
+          id="correo"
+          name="correo"
+          type="email"
+          placeholder="correo@ejemplo.com"
+          autocomplete="email"
+          required
+        />
 
-          <button class="boton boton-primario" type="submit">
-            Iniciar sesión
-          </button>
-        </form>
+        <label for="contrasena">Contraseña</label>
+        <input
+          class="campo campo-formulario"
+          id="contrasena"
+          name="contrasena"
+          type="password"
+          placeholder="Tu contraseña"
+          autocomplete="current-password"
+          required
+        />
 
-        <div class="alterno">
-          <p>¿Aún no tienes cuenta?</p>
-          <a class="boton boton-claro" th:href="registro.html">Crear cuenta</a>
-        </div>
-      </section>
-    </main>
+        <button class="boton boton-primario" type="submit">Iniciar sesión</button>
+      </form>
 
-    <footer class="pie">
-      <div class="contenedor">
-        <span>Librería Raudskinna</span>
-        <nav aria-label="Pie de página">
-          <a th:href="index.html">Inicio</a> ·
-          <a th:href="catalogo.html">Catálogo</a> ·
-          <a th:href="carrito.html">Carrito</a>
-        </nav>
+      <div class="alterno">
+        <p>¿Aún no tienes cuenta?</p>
+        <a class="boton boton-claro" href="registro.html">Crear cuenta</a>
       </div>
-    </footer>
-    <script type="module" src="../js/pages/iniciar-sesion.js"></script>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Librería Raudskinna</span>
+      <nav aria-label="Pie de página">
+        <a href="../index.html">Inicio</a> ·
+        <a href="catalogo.html">Catálogo</a> ·
+        <a href="carrito.html">Carrito</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/pages/iniciar-sesion.js"></script>
 </body>
 </html>
