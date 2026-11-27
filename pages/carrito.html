@@ -1,246 +1,96 @@
-
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Tu carrito · Librería Raudskinna</title>
-
-    <!-- Reutilizar los estilos públicos de la librería. -->
-    <link rel="stylesheet" th:href="../css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tu carrito · Librería Raudskinna</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
 <body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="logo" href="../index.html">
+        <img src="../assets/logo.png" alt="Librería Raudskinna" />
+      </a>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="catalogo.html">Catálogo</a></li>
+          <li><a href="iniciar-sesion.html">Iniciar sesión</a></li>
+          <li><a href="mis-ordenes.html">Mis órdenes</a></li>
+          <li><a href="carrito.html" aria-current="page">Carrito</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-<!-- Cabecera compartida de las vistas públicas. -->
-<th:block th:replace="~{fragments/header :: header('carrito')}">
-</th:block>
-
-<main class="contenedor carrito-publico">
-
+  <main class="contenedor carrito-publico">
     <div class="encabezado-pagina">
-
-        <h1>Tu carrito</h1>
-
-        <p>Revisa los libros seleccionados antes de continuar.</p>
-
+      <h1>Tu carrito</h1>
+      <p>Revisa los libros seleccionados antes de continuar.</p>
     </div>
 
-    <!-- Mensajes proporcionados mediante RedirectAttributes. -->
-    <div class="mensaje-exito"
-         role="status"
-         th:if="${mensajeExito != null}"
-         th:text="${mensajeExito}">
-    </div>
+    <div class="mensaje-exito" role="status" hidden></div>
+    <div class="mensaje-error" role="alert" hidden></div>
 
-    <div class="mensaje-error"
-         role="alert"
-         th:if="${mensajeError != null}"
-         th:text="${mensajeError}">
-    </div>
-
-    <!--
-        Informar al cliente cuando todavía no tiene
-        artículos agregados al carrito.
-    -->
-    <section class="seccion carrito-vacio"
-             th:if="${#lists.isEmpty(carrito.items)}">
-
-        <h2>Tu carrito está vacío</h2>
-
-        <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
-
-        <a class="boton boton-primario"
-           th:href="catalogo.html">
-            Explorar catálogo
-        </a>
-
+    <section class="seccion carrito-vacio" id="carrito-vacio" hidden>
+      <h2>Tu carrito está vacío</h2>
+      <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
+      <a class="boton boton-primario" href="catalogo.html">Explorar catálogo</a>
     </section>
 
-    <!-- Mostrar el contenido cuando existan artículos. -->
-    <div class="carrito"
-         th:unless="${#lists.isEmpty(carrito.items)}">
+    <div class="carrito" id="carrito-contenido">
+      <ul class="carrito-lista" id="lista-carrito">
+        <li class="item-carrito" data-formato-id="1">
+          <div class="portada">PORTADA</div>
 
-        <ul class="carrito-lista">
+          <div>
+            <h3>Dune</h3>
+            <p class="autor">Pasta dura</p>
+            <p class="precio">$350.00 MXN</p>
 
-            <!--
-                Cada artículo corresponde a una presentación
-                comercial proporcionada por CarritoService.
-            -->
-            <li class="item-carrito"
-                th:each="item : ${carrito.items}">
+            <form class="cantidad" action="#" method="post">
+              <input class="campo cantidad-input" type="number" name="cantidad" value="2" min="1" step="1" required aria-label="Cantidad de artículos" />
+              <button class="boton boton-claro" type="submit">Actualizar</button>
+            </form>
 
-                <!-- Portada provisional. -->
-                <div class="portada">
-                    PORTADA
-                </div>
+            <p class="subtotal-item"><strong>Subtotal:</strong> <span>$700.00 MXN</span></p>
+          </div>
 
-                <div>
+          <form action="#" method="post">
+            <button class="boton boton-claro" type="submit">Eliminar</button>
+          </form>
+        </li>
+      </ul>
 
-                    <!-- Título del libro. -->
-                    <h3 th:text="${item.titulo}">
-                        Título del libro
-                    </h3>
-
-                    <!-- Nombre comercial de la presentación. -->
-                    <p class="autor"
-                       th:switch="${item.formato}">
-
-                        <span th:case="'PASTA_DURA'">
-                            Pasta dura
-                        </span>
-
-                        <span th:case="'PASTA_BLANDA'">
-                            Pasta blanda
-                        </span>
-
-                        <span th:case="'DIGITAL'">
-                            Digital
-                        </span>
-
-                        <span th:case="*"
-                              th:text="${item.formato}">
-                        </span>
-
-                    </p>
-
-                    <!-- Precio unitario calculado en el servidor. -->
-                    <p class="precio"
-                       th:with="precioFormateado=${#numbers.formatDecimal(item.precioUnitario, 1, 'COMMA', 2, 'POINT')}"
-                       th:text="|$${precioFormateado} MXN|">
-                        $350.00 MXN
-                    </p>
-
-                    <!-- Formulario para modificar la cantidad. -->
-                    <form class="cantidad"
-                          method="post"
-                          th:action="#">
-
-                        <input type="hidden"
-                               name="formatoLibroId"
-                               th:value="${item.formatoLibroId}" />
-
-                        <input class="campo cantidad-input"
-                               type="number"
-                               name="cantidad"
-                               min="1"
-                               max="2147483647"
-                               step="1"
-                               required
-                               aria-label="Cantidad de artículos"
-                               th:value="${item.cantidad}" />
-
-                        <button class="boton boton-claro"
-                                type="submit">
-                            Actualizar
-                        </button>
-
-                    </form>
-
-                    <!-- Subtotal proporcionado por el servicio. -->
-                    <p class="subtotal-item">
-
-                        <strong>Subtotal:</strong>
-
-                        <span th:with="subtotalFormateado=${#numbers.formatDecimal(item.subtotal, 1, 'COMMA', 2, 'POINT')}"
-                              th:text="|$${subtotalFormateado} MXN|">
-                            $700.00 MXN
-                        </span>
-
-                    </p>
-
-                </div>
-
-                <!-- Formulario para eliminar el artículo. -->
-                <form method="post"
-                      th:action="#">
-
-                    <input type="hidden"
-                           name="formatoLibroId"
-                           th:value="${item.formatoLibroId}" />
-
-                    <button class="boton boton-claro"
-                            type="submit">
-                        Eliminar
-                    </button>
-
-                </form>
-
-            </li>
-
-        </ul>
-
-        <!-- Resumen económico del carrito. -->
-        <aside class="resumen">
-
-            <h2>Resumen de compra</h2>
-
-            <div class="resumen-fila">
-
-                <span>Subtotal</span>
-
-                <span th:with="totalFormateado=${#numbers.formatDecimal(carrito.total, 1, 'COMMA', 2, 'POINT')}"
-                      th:text="|$${totalFormateado} MXN|">
-                    $700.00 MXN
-                </span>
-
-            </div>
-
-            <div class="resumen-fila resumen-total">
-
-                <span>Total</span>
-
-                <span th:with="totalFormateado=${#numbers.formatDecimal(carrito.total, 1, 'COMMA', 2, 'POINT')}"
-                      th:text="|$${totalFormateado} MXN|">
-                    $700.00 MXN
-                </span>
-
-            </div>
-
-            <!--
-            Permite continuar al proceso de confirmación
-            de compra mediante el controlador CheckoutController.
-            -->
-            <a class="boton boton-primario"
-               th:href="checkout.html">
-
-                Continuar al checkout
-
-            </a>
-
-            <a class="boton boton-claro"
-               th:href="catalogo.html">
-                Seguir comprando
-            </a>
-
-        </aside>
-
+      <aside class="resumen">
+        <h2>Resumen de compra</h2>
+        <div class="resumen-fila">
+          <span>Subtotal</span>
+          <span id="subtotal-carrito">$700.00 MXN</span>
+        </div>
+        <div class="resumen-fila resumen-total">
+          <span>Total</span>
+          <span id="total-carrito">$700.00 MXN</span>
+        </div>
+        <a class="boton boton-primario" href="checkout.html">Continuar al checkout</a>
+        <a class="boton boton-claro" href="catalogo.html">Seguir comprando</a>
+      </aside>
     </div>
+  </main>
 
-</main>
-
-<!-- Pie de página de Librería Raudskinna. -->
-<footer class="pie">
-
+  <footer class="pie">
     <div class="contenedor">
-
-        <span>Librería Raudskinna</span>
-
-        <nav aria-label="Pie de página">
-
-            <a th:href="index.html">Inicio</a> ·
-            <a th:href="catalogo.html">Catálogo</a> ·
-            <a th:href="carrito.html">Carrito</a>
-
-        </nav>
-
+      <span>Librería Raudskinna</span>
+      <nav aria-label="Pie de página">
+        <a href="../index.html">Inicio</a> ·
+        <a href="catalogo.html">Catálogo</a> ·
+        <a href="carrito.html">Carrito</a>
+      </nav>
     </div>
-
-</footer>
+  </footer>
 
   <script type="module" src="../js/pages/carrito.js"></script>
 </body>
-
 </html>
