@@ -1,294 +1,113 @@
-
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Catálogo · Librería Raudskinna</title>
-
-    <!-- Reutilizar la identidad gráfica de la librería. -->
-    <link rel="stylesheet" th:href="../css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo · Librería Raudskinna</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
 <body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="logo" href="../index.html">
+        <img src="../assets/logo.png" alt="Librería Raudskinna" />
+      </a>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="catalogo.html" aria-current="page">Catálogo</a></li>
+          <li><a href="iniciar-sesion.html">Iniciar sesión</a></li>
+          <li><a href="mis-ordenes.html">Mis órdenes</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-<!-- Cabecera compartida de las vistas públicas. -->
-<th:block th:replace="~{fragments/header :: header('catalogo')}">
-</th:block>
-
-<main class="contenedor catalogo-publico">
-
-    <!-- Presentación principal del catálogo público. -->
+  <main class="contenedor catalogo-publico">
     <div class="encabezado-pagina">
-
-        <h1>Catálogo</h1>
-
-        <p>
-            Explora nuestro catálogo y encuentra tu próxima lectura.
-        </p>
-
+      <h1>Catálogo</h1>
+      <p>Explora nuestro catálogo y encuentra tu próxima lectura.</p>
     </div>
 
-    <!--
-        Formulario de búsqueda, filtrado y ordenamiento
-        del catálogo público.
+    <form class="filtros" role="search" method="get" action="#">
+      <input
+        class="campo campo-busqueda"
+        type="search"
+        name="q"
+        placeholder="Buscar por título o autor..."
+        aria-label="Buscar por título o autor"
+      />
 
-        Utiliza el método GET porque la operación únicamente
-        consulta información y no modifica datos en MySQL.
+      <select class="campo campo-select" name="categoria" aria-label="Filtrar por categoría">
+        <option value="">Todas las categorías</option>
+        <option value="Ficción">Ficción</option>
+        <option value="Fantasía">Fantasía</option>
+        <option value="Terror">Terror</option>
+        <option value="Ciencia ficción">Ciencia ficción</option>
+      </select>
 
-        CatalogoController recibe el término de búsqueda
-        y delega su procesamiento a LibroService.
-    -->
-    <form class="filtros"
-          role="search"
-          method="get"
-          th:action="catalogo.html">
+      <select class="campo campo-select" name="autor" aria-label="Filtrar por autor">
+        <option value="">Todos los autores</option>
+        <option value="Frank Herbert">Frank Herbert</option>
+        <option value="Robert C. Martin">Robert C. Martin</option>
+        <option value="Gabriel García Márquez">Gabriel García Márquez</option>
+      </select>
 
-        <!-- Conservar el término introducido por el visitante. -->
-        <input
-                class="campo campo-busqueda"
-                type="search"
-                name="busqueda"
-                th:value="${busqueda}"
-                placeholder="Buscar por título o autor..."
-                aria-label="Buscar por título o autor"
-        />
+      <select class="campo campo-select" name="orden" aria-label="Ordenar resultados">
+        <option value="relevancia">Relevancia</option>
+        <option value="precio-asc">Precio: menor a mayor</option>
+        <option value="precio-desc">Precio: mayor a menor</option>
+        <option value="titulo-asc">Título: A-Z</option>
+      </select>
 
-        <!--
-            Filtro dinámico por categoría.
-
-            Las opciones se obtienen del catálogo público completo,
-            independientemente de los resultados del filtrado.
-        -->
-        <select class="campo campo-select"
-                name="categoria"
-                aria-label="Filtrar por categoría">
-
-            <option value="">Todas las categorías</option>
-
-            <option th:each="opcionCategoria : ${categorias}"
-                    th:value="${opcionCategoria}"
-                    th:text="${opcionCategoria}"
-                    th:selected="${categoria != null
-                and #strings.equalsIgnoreCase(
-                    opcionCategoria,
-                    #strings.trim(categoria)
-                )}">
-            </option>
-
-        </select>
-
-        <!--
-            Filtro dinámico por autor.
-
-            Cada autor aparece una sola vez, aunque esté
-            asociado a múltiples libros del catálogo.
-        -->
-        <select class="campo campo-select"
-                name="autor"
-                aria-label="Filtrar por autor">
-
-            <option value="">Todos los autores</option>
-
-            <option th:each="opcionAutor : ${autores}"
-                    th:value="${opcionAutor}"
-                    th:text="${opcionAutor}"
-                    th:selected="${autor != null
-                and #strings.equalsIgnoreCase(
-                    opcionAutor,
-                    #strings.trim(autor)
-                )}">
-            </option>
-
-        </select>
-
-        <!--
-            Ordenamiento de los resultados del catálogo.
-
-            LibroService aplica el criterio seleccionado
-            después de realizar el filtrado bibliográfico.
-        -->
-        <select class="campo campo-select"
-                name="orden"
-                aria-label="Ordenar resultados">
-
-            <option value="relevancia"
-                    th:selected="${orden == 'relevancia'}">
-                Relevancia
-            </option>
-
-            <option value="precio-asc"
-                    th:selected="${orden == 'precio-asc'}">
-                Precio: menor a mayor
-            </option>
-
-            <option value="precio-desc"
-                    th:selected="${orden == 'precio-desc'}">
-                Precio: mayor a menor
-            </option>
-
-            <option value="titulo-asc"
-                    th:selected="${orden == 'titulo-asc'}">
-                Título: A-Z
-            </option>
-
-        </select>
-
-        <!-- Enviar los criterios de consulta al controlador. -->
-        <button class="boton boton-primario"
-                type="submit">
-            Buscar
-        </button>
-
-        <!-- Restablecer el catálogo público completo. -->
-        <a class="boton boton-claro"
-           th:href="catalogo.html">
-            Limpiar
-        </a>
-
+      <button class="boton boton-primario" type="submit">Buscar</button>
+      <a class="boton boton-claro" href="catalogo.html">Limpiar</a>
     </form>
 
-    <!-- Mostrar dinámicamente la cantidad de libros recuperados. -->
-    <p class="conteo"
-       th:text="${#lists.size(libros) == 1
-           ? '1 libro'
-           : #lists.size(libros) + ' libros'}">
-        0 libros
-    </p>
+    <p class="conteo" id="conteo-libros">2 libros</p>
+    <p id="mensaje-vacio" hidden>No se encontraron libros que coincidan con tu búsqueda.</p>
 
-    <!--
-        Diferenciar un catálogo vacío de una consulta
-        sin coincidencias bibliográficas.
-    -->
-    <div th:if="${#lists.isEmpty(libros)}"
-         th:with="hayCriterios=${
-         (busqueda != null
-             and !#strings.isEmpty(#strings.trim(busqueda)))
-         or
-         (categoria != null
-             and !#strings.isEmpty(#strings.trim(categoria)))
-         or
-         (autor != null
-             and !#strings.isEmpty(#strings.trim(autor)))
-     }">
+    <ul class="libros" id="lista-libros">
+      <li class="libro">
+        <div class="portada">
+          <img src="../assets/portadas/dune.png" alt="Portada de Dune" loading="lazy" />
+        </div>
+        <h3>Dune</h3>
+        <p class="autor">Frank Herbert</p>
+        <p>Ciencia ficción</p>
+        <div class="informacion-comercial">
+          <p class="precio">Desde <strong>$350.00 MXN</strong></p>
+        </div>
+        <a class="boton boton-primario" href="detalle-libro.html?id=1">Ver detalle</a>
+      </li>
 
-        <!-- No existen coincidencias con los criterios seleccionados. -->
-        <p th:if="${hayCriterios}">
-            No se encontraron libros que coincidan con tu búsqueda.
-        </p>
-
-        <!-- El catálogo público todavía no contiene libros activos. -->
-        <p th:unless="${hayCriterios}">
-            Todavía no hay libros disponibles en el catálogo.
-        </p>
-
-    </div>
-
-    <!--
-        Presentar los libros activos y su información comercial.
-
-        CatalogoController proporciona la colección de libros
-        mediante LibroService. La vista únicamente presenta
-        los datos recibidos.
-    -->
-    <ul class="libros"
-        th:unless="${#lists.isEmpty(libros)}">
-
-        <li class="libro"
-            th:each="tarjeta : ${libros}"
-            th:classappend="${!tarjeta.disponible}
-                ? 'libro-agotado' : ''">
-
-            <!-- Portada del libro o representación alternativa. -->
-            <div class="portada">
-
-                <img th:if="${tarjeta.libro.portadaUrl != null
-                             and !#strings.isEmpty(tarjeta.libro.portadaUrl)}"
-                     th:src="${tarjeta.libro.portadaUrl}"
-                     th:alt="|Portada de ${tarjeta.libro.titulo}|"
-                     loading="lazy" />
-
-                <span th:unless="${tarjeta.libro.portadaUrl != null
-                                  and !#strings.isEmpty(tarjeta.libro.portadaUrl)}">
-                    PORTADA
-                </span>
-
-            </div>
-
-            <!-- Información bibliográfica pública. -->
-            <h3 th:text="${tarjeta.libro.titulo}">
-                Título del libro
-            </h3>
-
-            <p class="autor"
-               th:text="${#strings.listJoin(tarjeta.libro.autores, ', ')}">
-                Autor
-            </p>
-
-            <p th:text="${tarjeta.libro.categoria}">
-                Categoría
-            </p>
-
-            <!--
-                Información comercial calculada por LibroService.
-                No se realizan cálculos de disponibilidad en la vista.
-            -->
-            <div class="informacion-comercial">
-
-                <!-- Mostrar el menor precio disponible. -->
-                <p class="precio"
-                   th:if="${tarjeta.disponible}">
-
-                    Desde
-
-                    <strong th:with="precioFormateado=${#numbers.formatDecimal(tarjeta.precioDesde, 1, 'COMMA', 2, 'POINT')}"
-                            th:text="|$${precioFormateado} MXN|">
-                        $149.00 MXN
-                    </strong>
-
-                </p>
-
-                <!-- Informar cuando no existan formatos disponibles. -->
-                <span class="etiqueta-agotado"
-                      th:unless="${tarjeta.disponible}">
-                    Agotado
-                </span>
-
-            </div>
-
-            <!--
-                Permitir la consulta bibliográfica y comercial,
-                independientemente de la disponibilidad del libro.
-            -->
-            <a class="boton boton-primario"
-               th:href="detalle-libro.html?id=1">
-                Ver detalle
-            </a>
-
-        </li>
-
+      <li class="libro">
+        <div class="portada">
+          <img src="../assets/portadas/cleanCode.png" alt="Portada de Clean Code" loading="lazy" />
+        </div>
+        <h3>Clean Code</h3>
+        <p class="autor">Robert C. Martin</p>
+        <p>Tecnología</p>
+        <div class="informacion-comercial">
+          <p class="precio">Desde <strong>$420.00 MXN</strong></p>
+        </div>
+        <a class="boton boton-primario" href="detalle-libro.html?id=2">Ver detalle</a>
+      </li>
     </ul>
+  </main>
 
-</main>
-
-<!-- Pie de página de Librería Raudskinna. -->
-<footer class="pie">
-
+  <footer class="pie">
     <div class="contenedor">
-
-        <span>Librería Raudskinna</span>
-
-        <nav aria-label="Pie de página">
-            <a th:href="index.html">Inicio</a> ·
-            <a th:href="catalogo.html">Catálogo</a> ·
-            <a th:href="carrito.html">Carrito</a>
-        </nav>
-
+      <span>Librería Raudskinna</span>
+      <nav aria-label="Pie de página">
+        <a href="../index.html">Inicio</a> ·
+        <a href="catalogo.html">Catálogo</a> ·
+        <a href="carrito.html">Carrito</a>
+      </nav>
     </div>
-
-</footer>
+  </footer>
 
   <script type="module" src="../js/pages/catalogo.js"></script>
 </body>
