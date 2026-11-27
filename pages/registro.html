@@ -1,100 +1,108 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Crear cuenta · Librería Raudskinna</title>
-    <link rel="stylesheet" th:href="../css/styles.css" />
-  </head>
-  <body>
-    <th:block th:replace="~{fragments/header :: header('cuenta')}"></th:block>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crear cuenta · Librería Raudskinna</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
 
-    <main class="contenedor">
-      <section class="panel registro">
-        <h1>Crear cuenta</h1>
-        <p class="registro-texto">
-          Regístrate para realizar compras y consultar el historial de tus
-          órdenes.
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="logo" href="../index.html">
+        <img src="../assets/logo.png" alt="Librería Raudskinna" />
+      </a>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="catalogo.html">Catálogo</a></li>
+          <li><a href="iniciar-sesion.html">Iniciar sesión</a></li>
+          <li><a href="mis-ordenes.html">Mis órdenes</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="panel registro">
+      <h1>Crear cuenta</h1>
+      <p class="registro-texto">
+        Regístrate para realizar compras y consultar el historial de tus órdenes.
+      </p>
+
+      <p class="formulario-error" id="mensaje-error" role="alert" hidden></p>
+
+      <form class="formulario" id="form-registro" action="#" method="post">
+        <label for="nombre">Nombre completo</label>
+        <input
+          class="campo campo-formulario"
+          id="nombre"
+          name="nombre"
+          type="text"
+          placeholder="Ej. Ana López"
+          autocomplete="name"
+          required
+        />
+
+        <label for="correo">Correo electrónico</label>
+        <input
+          class="campo campo-formulario"
+          id="correo"
+          name="correo"
+          type="email"
+          placeholder="correo@ejemplo.com"
+          autocomplete="email"
+          required
+        />
+
+        <label for="telefono">Teléfono de contacto</label>
+        <input
+          class="campo campo-formulario"
+          id="telefono"
+          name="telefono"
+          type="tel"
+          placeholder="10 dígitos"
+          autocomplete="tel-national"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          minlength="10"
+          maxlength="10"
+          required
+        />
+
+        <label for="contrasena">Contraseña</label>
+        <input
+          class="campo campo-formulario"
+          id="contrasena"
+          name="contrasena"
+          type="password"
+          placeholder="Mínimo 8 caracteres"
+          minlength="8"
+          autocomplete="new-password"
+          required
+        />
+
+        <button class="boton boton-primario" type="submit">Registrarme</button>
+        <p class="formulario-enlace">
+          ¿Ya tienes cuenta? <a href="iniciar-sesion.html">Iniciar sesión</a>
         </p>
+      </form>
+    </section>
+  </main>
 
-        <!-- Mensaje de error devuelto por el registro. -->
-        <p
-                th:if="${error}"
-                th:text="${error}"
-                role="alert"
-                class="formulario-error">
-        </p>
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Librería Raudskinna</span>
+      <nav aria-label="Pie de página">
+        <a href="../index.html">Inicio</a> ·
+        <a href="catalogo.html">Catálogo</a> ·
+        <a href="carrito.html">Carrito</a>
+      </nav>
+    </div>
+  </footer>
 
-        <form class="formulario" th:action="registro.html" th:object="${usuario}" method="post">
-          <label for="nombre">Nombre completo</label>
-          <input
-            class="campo campo-formulario"
-            id="nombre"
-            th:field="*{nombre}"
-            type="text"
-            placeholder="Ej. Ana López"
-            autocomplete="name"
-            required
-          />
-
-          <label for="correo">Correo electrónico</label>
-          <input
-            class="campo campo-formulario"
-            id="correo"
-            th:field="*{correo}"
-            type="email"
-            placeholder="correo@ejemplo.com"
-            autocomplete="email"
-            required
-          />
-
-          <label for="telefono">Teléfono de contacto</label>
-          <input
-                  class="campo campo-formulario"
-                  id="telefono"
-                  th:field="*{telefono}"
-                  type="tel"
-                  placeholder="10 dígitos"
-                  autocomplete="tel-national"
-                  inputmode="numeric"
-                  pattern="[0-9]{10}"
-                  minlength="10"
-                  maxlength="10"
-                  required
-          />
-
-          <label for="contrasena">Contraseña</label>
-          <input
-            class="campo campo-formulario"
-            id="contrasena"
-            th:field="*{contrasena}"
-            type="password"
-            placeholder="Mínimo 8 caracteres"
-            minlength="8"
-            autocomplete="new-password"
-            required
-          />
-
-          <button class="boton boton-primario" type="submit">
-            Registrarme
-          </button>
-          <p class="formulario-enlace">
-            ¿Ya tienes cuenta? <a th:href="iniciar-sesion.html">Iniciar sesión</a>
-          </p>
-        </form>
-      </section>
-    </main>
-
-    <footer class="pie">
-      <div class="contenedor">
-        <span>Librería Raudskinna</span>
-        <nav aria-label="Pie de página">
-          <a th:href="index.html">Inicio</a> ·
-          <a th:href="catalogo.html">Catálogo</a> ·
-          <a th:href="carrito.html">Carrito</a>
-        </nav>
-      </div>
-    </footer>
-    <script type="module" src="../js/pages/registro.js"></script>
+  <script type="module" src="../js/pages/registro.js"></script>
 </body>
 </html>
